@@ -10,6 +10,7 @@ Values with spaces must be quoted on the command line:
 """
 import argparse
 import os
+import re
 import sys
 
 try:
@@ -22,13 +23,34 @@ except ImportError:
 
 
 def span_at(page, rect):
-    """Return the first text span that overlaps rect, or None."""
+    """Return the text span on the same line as rect.
+
+    Uses the span containing the match's center point, so a neighbouring
+    line whose box merely touches the match is not picked.
+    """
+    center = fitz.Point((rect.x0 + rect.x1) / 2, (rect.y0 + rect.y1) / 2)
+    best, best_area = None, 0.0
     for block in page.get_text("dict")["blocks"]:
         for line in block.get("lines", []):
             for span in line["spans"]:
-                if fitz.Rect(span["bbox"]).intersects(rect):
+                box = fitz.Rect(span["bbox"])
+                if box.contains(center):
                     return span
-    return None
+                area = abs(box & rect)
+                if area > best_area:
+                    best, best_area = span, area
+    return best
+
+
+def core_rect(rect):
+    """Middle band of a match box.
+
+    Search boxes include font ascent/descent and can overlap the lines above
+    and below in tightly spaced text; redacting the full box would erase
+    letters on those lines.
+    """
+    inset = rect.height * 0.3
+    return fitz.Rect(rect.x0 + 0.5, rect.y0 + inset, rect.x1 - 0.5, rect.y1 - inset)
 
 
 def int_to_rgb(c):
@@ -75,7 +97,7 @@ def replace_in_pdf(src, dst, old, new, ignore_case=False, fontfile=None,
             if dry_run:
                 continue
             inserts.append((fitz.Point(r.x0, baseline), size, rgb))
-            page.add_redact_annot(r, fill=False)  # remove old text, no white box
+            page.add_redact_annot(core_rect(r), fill=False)  # remove old text, no white box
         if dry_run:
             continue
         page.apply_redactions(images=fitz.PDF_REDACT_IMAGE_NONE)
@@ -86,6 +108,19 @@ def replace_in_pdf(src, dst, old, new, ignore_case=False, fontfile=None,
                                  fontname="custom", fontfile=fontfile)
             else:
                 page.insert_text(pt, new, fontsize=size, color=rgb, fontname="helv")
+
+    # Document properties (title, author, subject, keywords) can hold the value too
+    meta = dict(doc.metadata)
+    flags = 0 if not ignore_case else re.IGNORECASE
+    changed = [k for k in ("title", "author", "subject", "keywords")
+               if meta.get(k) and re.search(re.escape(old), meta[k], flags)]
+    if changed:
+        print(f"metadata: {', '.join(changed)}")
+        total += len(changed)
+        for k in changed:
+            meta[k] = re.sub(re.escape(old), lambda _: new, meta[k], flags=flags)
+        if not dry_run:
+            doc.set_metadata(meta)
 
     if total and not dry_run:
         doc.save(dst, garbage=3, deflate=True)
