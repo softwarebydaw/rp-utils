@@ -1,4 +1,6 @@
 .venv/
+# Local triage index (fingerprints of processed PDFs)
+.triage/
 __pycache__/
 *.pyc
 .DS_Store

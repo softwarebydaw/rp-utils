@@ -1,0 +1,35 @@
+{
+  "_about": "Reference data for triage.py. Carriers: names/aliases to look for. Products: names to look for per carrier. Parsers: layouts that have a rule-based (no-AI) parser; empty until one is built.",
+  "carriers": {
+    "Securian": ["Securian", "Minnesota Life"],
+    "Brighthouse": ["Brighthouse"],
+    "EquiTrust": ["EquiTrust"],
+    "Nationwide": ["Nationwide"],
+    "OneAmerica": ["OneAmerica", "American United Life"],
+    "Lincoln": ["Lincoln National", "Lincoln Life", "MoneyGuard"],
+    "Mutual of Omaha": ["Mutual of Omaha", "United of Omaha"],
+    "Genworth": ["Genworth"],
+    "Pacific Life": ["Pacific Life"],
+    "John Hancock": ["John Hancock"],
+    "Transamerica": ["Transamerica"],
+    "MassMutual": ["MassMutual", "Massachusetts Mutual"],
+    "New York Life": ["New York Life"],
+    "Northwestern Mutual": ["Northwestern Mutual"],
+    "Thrivent": ["Thrivent"],
+    "Penn Mutual": ["Penn Mutual"],
+    "National Western": ["National Western"],
+    "Midland National": ["Midland National"],
+    "Forethought": ["Forethought", "Global Atlantic"]
+  },
+  "products": {
+    "Securian": ["SecureCare III", "SecureCare IV"],
+    "Brighthouse": ["SmartCare"],
+    "EquiTrust": ["Bridge"],
+    "Nationwide": ["CareMatters", "Nationwide Care Matters"],
+    "OneAmerica": ["Asset-Care", "Annuity Care"],
+    "Lincoln": ["MoneyGuard Fixed Advantage", "MoneyGuard Market Advantage", "MoneyGuard"],
+    "Mutual of Omaha": ["MutualCare"],
+    "Pacific Life": ["PremierCare Advantage"]
+  },
+  "parsers": []
+}
