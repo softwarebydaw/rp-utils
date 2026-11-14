@@ -5,8 +5,16 @@ The original file is never changed.
 
 ## Quick start (prompted)
 
+First time only:
+
 ```bash
-cd /Users/bob/rp-utils
+git clone https://github.com/softwarebydaw/rp-utils.git
+```
+
+Then, from the folder you cloned into:
+
+```bash
+cd rp-utils
 ./pdf-replace/run.sh
 ```
 
