@@ -1,0 +1,404 @@
+{
+ "layout_key": "25a71e72b4bc",
+ "carrier": "Brighthouse",
+ "product": "SmartCare",
+ "layout": {
+  "carrier": "Brighthouse",
+  "product": "SmartCare",
+  "forms": [
+   "ICC18-5-70",
+   "ICC23-3ACCLTC3",
+   "ICC23-3EOBIP3PCT",
+   "ICC23-3ROPDB2",
+   "ICC23-3ROPSB2",
+   "ICC26-ISTR"
+  ],
+  "producer": "itextsharp by txt"
+ },
+ "status": "trial",
+ "agreements": 0,
+ "learned_on": "2026-11-14",
+ "fields": [
+  {
+   "key": "illustration_date",
+   "kind": "date",
+   "label": "Date Prepared:",
+   "occurrence": 0,
+   "relation": "right",
+   "page_marker": [
+    "Illustration Summary",
+    "Client Profile"
+   ]
+  },
+  {
+   "key": "issue_age",
+   "kind": "integer",
+   "label": "Age:",
+   "occurrence": 0,
+   "relation": "right",
+   "page_marker": [
+    "Illustration Summary",
+    "Client Profile"
+   ]
+  },
+  {
+   "key": "sex",
+   "kind": "sex",
+   "label": "Gender:",
+   "occurrence": 0,
+   "relation": "right"
+  },
+  {
+   "key": "rate_class",
+   "kind": "text",
+   "label": "Risk Class:",
+   "occurrence": 0,
+   "relation": "right"
+  },
+  {
+   "key": "state",
+   "kind": "state",
+   "label": "Issue State:",
+   "occurrence": 0,
+   "relation": "right"
+  },
+  {
+   "key": "premium",
+   "kind": "money",
+   "label": "Planned Annual Premium:",
+   "occurrence": 0,
+   "relation": "right"
+  },
+  {
+   "key": "premium_paying_period",
+   "kind": "text",
+   "label": "Premium Paying Period:",
+   "occurrence": 0,
+   "relation": "right",
+   "page_marker": [
+    "Illustration Summary",
+    "Client Profile"
+   ]
+  },
+  {
+   "key": "benefit_period_years",
+   "kind": "integer",
+   "label": "Total LTC Benefit Period:",
+   "occurrence": 0,
+   "relation": "right",
+   "page_marker": [
+    "Illustration Summary",
+    "Client Profile"
+   ]
+  },
+  {
+   "key": "inflation",
+   "kind": "text",
+   "label": "LTC Coverage:",
+   "occurrence": 0,
+   "relation": "right",
+   "page_marker": [
+    "Illustration Summary",
+    "Client Profile"
+   ]
+  },
+  {
+   "key": "face_amount",
+   "kind": "money",
+   "label": "Face Amount:",
+   "occurrence": 0,
+   "relation": "right",
+   "page_marker": [
+    "Illustration Summary",
+    "Client Profile"
+   ]
+  },
+  {
+   "key": "initial_death_benefit",
+   "kind": "money",
+   "label": "Initial Death Benefit:",
+   "occurrence": 0,
+   "relation": "right",
+   "page_marker": [
+    "Illustration Summary",
+    "Client Profile"
+   ]
+  },
+  {
+   "key": "rop_surrender_percent",
+   "kind": "percent",
+   "label": "ROP Surrender Benefit:",
+   "occurrence": 0,
+   "relation": "right",
+   "page_marker": [
+    "Illustration Summary",
+    "Client Profile"
+   ]
+  }
+ ],
+ "tables": [
+  {
+   "key": "ledger_guaranteed",
+   "page_marker": [
+    "Policy Values Ledger",
+    "Guaranteed Scale Maximum Charges"
+   ],
+   "cells": 11,
+   "columns": [
+    {
+     "key": "year",
+     "header": "Year",
+     "kind": "integer",
+     "cell": 0
+    },
+    {
+     "key": "age",
+     "header": "Age",
+     "kind": "integer",
+     "cell": 1
+    },
+    {
+     "key": "premium",
+     "header": "Premium Outlay",
+     "kind": "money",
+     "cell": 2
+    },
+    {
+     "key": "surrender_value",
+     "header": "Cash Surrender Value",
+     "kind": "money",
+     "cell": 3
+    },
+    {
+     "key": "surrender_received",
+     "header": "Amount Received Upon Surrender",
+     "kind": "money",
+     "cell": 4
+    },
+    {
+     "key": "death_benefit",
+     "header": "Death Benefit",
+     "kind": "money",
+     "cell": 5
+    },
+    {
+     "key": "ltc_pool",
+     "header": "Lifetime LTC Benefit",
+     "kind": "money",
+     "cell": 6
+    },
+    {
+     "key": "ltc_annual",
+     "header": "Annual LTC Benefit",
+     "kind": "money",
+     "cell": 7
+    },
+    {
+     "key": "ltc_monthly",
+     "header": "Monthly LTC Benefit",
+     "kind": "money",
+     "cell": 8
+    },
+    {
+     "key": "irr",
+     "header": "IRR on Lifetime LTC Benefit",
+     "kind": "percent",
+     "cell": 9
+    },
+    {
+     "key": "tax_equivalent_yield",
+     "header": "Tax Equivalent Yield",
+     "kind": "percent",
+     "cell": 10
+    }
+   ],
+   "invariants": [
+    {
+     "type": "years_consecutive"
+    },
+    {
+     "type": "age_minus_year_constant"
+    },
+    {
+     "type": "ratio",
+     "a": "ltc_monthly",
+     "b": "ltc_annual",
+     "times": 12
+    },
+    {
+     "type": "constant",
+     "col": "surrender_received",
+     "level": "warning"
+    },
+    {
+     "type": "constant",
+     "col": "death_benefit",
+     "level": "warning"
+    },
+    {
+     "type": "non_decreasing",
+     "col": "ltc_pool",
+     "level": "warning"
+    },
+    {
+     "type": "non_decreasing",
+     "col": "ltc_annual",
+     "level": "warning"
+    },
+    {
+     "type": "non_decreasing",
+     "col": "ltc_monthly",
+     "level": "warning"
+    }
+   ]
+  },
+  {
+   "key": "ledger_nonguaranteed_alternate",
+   "page_marker": [
+    "Policy Values Ledger",
+    "Non-Guaranteed Alternate Scale"
+   ],
+   "cells": 11,
+   "columns": [
+    {
+     "key": "year",
+     "header": "Year",
+     "kind": "integer",
+     "cell": 0
+    },
+    {
+     "key": "age",
+     "header": "Age",
+     "kind": "integer",
+     "cell": 1
+    },
+    {
+     "key": "premium",
+     "header": "Premium Outlay",
+     "kind": "money",
+     "cell": 2
+    },
+    {
+     "key": "surrender_value",
+     "header": "Cash Surrender Value",
+     "kind": "money",
+     "cell": 3
+    },
+    {
+     "key": "surrender_received",
+     "header": "Amount Received Upon Surrender",
+     "kind": "money",
+     "cell": 4
+    },
+    {
+     "key": "death_benefit",
+     "header": "Death Benefit",
+     "kind": "money",
+     "cell": 5
+    },
+    {
+     "key": "ltc_pool",
+     "header": "Lifetime LTC Benefit",
+     "kind": "money",
+     "cell": 6
+    },
+    {
+     "key": "ltc_annual",
+     "header": "Annual LTC Benefit",
+     "kind": "money",
+     "cell": 7
+    },
+    {
+     "key": "ltc_monthly",
+     "header": "Monthly LTC Benefit",
+     "kind": "money",
+     "cell": 8
+    },
+    {
+     "key": "irr",
+     "header": "IRR on Lifetime LTC Benefit",
+     "kind": "percent",
+     "cell": 9
+    },
+    {
+     "key": "tax_equivalent_yield",
+     "header": "Tax Equivalent Yield",
+     "kind": "percent",
+     "cell": 10
+    }
+   ],
+   "invariants": [
+    {
+     "type": "years_consecutive"
+    },
+    {
+     "type": "age_minus_year_constant"
+    },
+    {
+     "type": "ratio",
+     "a": "ltc_monthly",
+     "b": "ltc_annual",
+     "times": 12
+    },
+    {
+     "type": "constant",
+     "col": "death_benefit",
+     "level": "warning"
+    },
+    {
+     "type": "non_decreasing",
+     "col": "ltc_pool",
+     "level": "warning"
+    },
+    {
+     "type": "non_decreasing",
+     "col": "ltc_annual",
+     "level": "warning"
+    },
+    {
+     "type": "non_decreasing",
+     "col": "ltc_monthly",
+     "level": "warning"
+    }
+   ]
+  }
+ ],
+ "links": [
+  {
+   "field": "issue_age",
+   "table": "ledger_guaranteed",
+   "col": "age",
+   "where": {
+    "year": 1.0
+   },
+   "exact": true
+  },
+  {
+   "field": "premium",
+   "table": "ledger_guaranteed",
+   "col": "premium",
+   "where": {
+    "year": 1.0
+   },
+   "exact": false
+  },
+  {
+   "field": "face_amount",
+   "table": "ledger_guaranteed",
+   "col": "death_benefit",
+   "where": {
+    "year": 1.0
+   },
+   "exact": false
+  },
+  {
+   "field": "initial_death_benefit",
+   "table": "ledger_guaranteed",
+   "col": "death_benefit",
+   "where": {
+    "year": 1.0
+   },
+   "exact": false
+  }
+ ]
+}

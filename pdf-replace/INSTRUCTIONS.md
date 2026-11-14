@@ -57,7 +57,8 @@ Exit code is `1` when nothing matched (no file is written).
 3. Removes the old text with a redaction (no white box is drawn, images are untouched).
    Only the middle band of each match is redacted, so letters on tightly spaced
    lines above and below are not erased.
-4. Writes the new text at the same spot.
+4. Writes the new text at the same spot, in the same writing direction (pages stored sideways,
+   such as landscape ledgers, are handled).
 5. Also replaces the value in document properties (title, author, subject, keywords).
 
 ## Limits

@@ -23,34 +23,65 @@ except ImportError:
 
 
 def span_at(page, rect):
-    """Return the text span on the same line as rect.
+    """Return (span, line direction) for the text on the same line as rect.
 
     Uses the span containing the match's center point, so a neighbouring
     line whose box merely touches the match is not picked.
     """
     center = fitz.Point((rect.x0 + rect.x1) / 2, (rect.y0 + rect.y1) / 2)
-    best, best_area = None, 0.0
+    best, best_area = (None, (1, 0)), 0.0
     for block in page.get_text("dict")["blocks"]:
         for line in block.get("lines", []):
             for span in line["spans"]:
                 box = fitz.Rect(span["bbox"])
                 if box.contains(center):
-                    return span
+                    return span, line["dir"]
                 area = abs(box & rect)
                 if area > best_area:
-                    best, best_area = span, area
+                    best, best_area = (span, line["dir"]), area
     return best
 
 
-def core_rect(rect):
-    """Middle band of a match box.
+def text_angle(direction):
+    """Writing direction as 0/90/180/270 degrees counter-clockwise.
+
+    Text on a rotated page (for example a landscape ledger stored as a portrait page
+    turned 90 degrees) runs up or down in the page's own coordinates.
+    """
+    dx, dy = direction
+    if abs(dx) >= abs(dy):
+        return 0 if dx > 0 else 180
+    return 90 if dy < 0 else 270
+
+
+def along(rect, angle):
+    """Length of the match along the writing direction."""
+    return rect.width if angle in (0, 180) else rect.height
+
+
+def start_point(rect, angle, origin):
+    """Where the new text starts: beginning of the match, on the original baseline."""
+    if angle == 0:
+        return fitz.Point(rect.x0, origin[1])
+    if angle == 180:
+        return fitz.Point(rect.x1, origin[1])
+    if angle == 90:
+        return fitz.Point(origin[0], rect.y1)
+    return fitz.Point(origin[0], rect.y0)
+
+
+def core_rect(rect, angle=0):
+    """Middle band of a match box, across the line height.
 
     Search boxes include font ascent/descent and can overlap the lines above
     and below in tightly spaced text; redacting the full box would erase
     letters on those lines.
     """
-    inset = rect.height * 0.3
-    return fitz.Rect(rect.x0 + 0.5, rect.y0 + inset, rect.x1 - 0.5, rect.y1 - inset)
+    if angle in (0, 180):
+        inset = rect.height * 0.3
+        return fitz.Rect(rect.x0 + 0.5, rect.y0 + inset, rect.x1 - 0.5, rect.y1 - inset)
+    inset = rect.width * 0.3
+    return fitz.Rect(rect.x0 + inset, rect.y0 + 0.5, rect.x1 - inset, rect.y1 - 0.5)
 
 
 def int_to_rgb(c):
@@ -81,33 +112,35 @@ def replace_in_pdf(src, dst, old, new, ignore_case=False, fontfile=None,
 
         inserts = []
         for r in hits:
-            s = span_at(page, r)
-            size = s["size"] if s else r.height * 0.8
+            s, direction = span_at(page, r)
+            angle = text_angle(direction)
+            room = along(r, angle)
+            size = s["size"] if s else (r.height if angle in (0, 180) else r.width) * 0.8
             rgb = int_to_rgb(s["color"] if s else 0)
-            baseline = s["origin"][1] if s else r.y1 - 2
+            origin = s["origin"] if s else (r.x1 - 2, r.y1 - 2)
             width = text_width(new, size, fontfile)
-            if width > r.width + 0.5:
+            if width > room + 0.5:
                 if fit:
-                    size *= r.width / width
+                    size *= room / width
                     print(f"  page {page.number + 1}: shrank new text to {size:.1f}pt to fit")
                 else:
                     print(f"  page {page.number + 1}: WARNING new text is "
-                          f"{width - r.width:.0f}pt wider than old and may overlap "
+                          f"{width - room:.0f}pt wider than old and may overlap "
                           f"(use --fit to shrink it)")
             if dry_run:
                 continue
-            inserts.append((fitz.Point(r.x0, baseline), size, rgb))
-            page.add_redact_annot(core_rect(r), fill=False)  # remove old text, no white box
+            inserts.append((start_point(r, angle, origin), size, rgb, angle))
+            page.add_redact_annot(core_rect(r, angle), fill=False)  # remove old text, no white box
         if dry_run:
             continue
         page.apply_redactions(images=fitz.PDF_REDACT_IMAGE_NONE)
 
-        for pt, size, rgb in inserts:
+        for pt, size, rgb, angle in inserts:
             if fontfile:
-                page.insert_text(pt, new, fontsize=size, color=rgb,
+                page.insert_text(pt, new, fontsize=size, color=rgb, rotate=angle,
                                  fontname="custom", fontfile=fontfile)
             else:
-                page.insert_text(pt, new, fontsize=size, color=rgb, fontname="helv")
+                page.insert_text(pt, new, fontsize=size, color=rgb, rotate=angle, fontname="helv")
 
     # Document properties (title, author, subject, keywords) can hold the value too
     meta = dict(doc.metadata)

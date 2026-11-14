@@ -1,0 +1,288 @@
+{
+ "layout_key": "a31fb3640e89",
+ "carrier": "EquiTrust",
+ "product": "Bridge",
+ "layout": {
+  "carrier": "EquiTrust",
+  "product": "Bridge",
+  "forms": [
+   "ICC12-ET-EIA-2000",
+   "ICC16-ET-TI",
+   "ICC17-ET-FIXED-MVA",
+   "ICC18-430-NHW"
+  ],
+  "producer": "copyright - imagisoft, inc"
+ },
+ "status": "trial",
+ "agreements": 0,
+ "learned_on": "2026-11-14",
+ "fields": [
+  {
+   "key": "illustration_date",
+   "kind": "date",
+   "label": "DATE PREPARED",
+   "occurrence": 0,
+   "relation": "below"
+  },
+  {
+   "key": "issue_age",
+   "kind": "integer",
+   "label": "Issue Age:",
+   "occurrence": 0,
+   "relation": "right"
+  },
+  {
+   "key": "sex",
+   "kind": "sex",
+   "label": "Gender",
+   "occurrence": 0,
+   "relation": "right"
+  },
+  {
+   "key": "state",
+   "kind": "state",
+   "label": "AGE",
+   "occurrence": 0,
+   "relation": "right",
+   "match_case": true
+  },
+  {
+   "key": "rate_class",
+   "kind": "text",
+   "label": "Underwriting Class:",
+   "occurrence": 0,
+   "relation": "right",
+   "page_marker": [
+    "Total Projected Values",
+    "Guaranteed Values Minimum"
+   ]
+  },
+  {
+   "key": "premium",
+   "kind": "money",
+   "label": "Initial Premium:",
+   "occurrence": 0,
+   "relation": "right"
+  },
+  {
+   "key": "coverage_ratio_percent",
+   "kind": "percent",
+   "label": "Coverage Ratio:",
+   "occurrence": 0,
+   "relation": "right",
+   "page_marker": [
+    "Total Projected Values",
+    "Guaranteed Values Minimum"
+   ]
+  },
+  {
+   "key": "initial_benefit_base",
+   "kind": "money",
+   "label": "Initial Benefit Base:",
+   "occurrence": 0,
+   "relation": "right"
+  }
+ ],
+ "tables": [
+  {
+   "key": "ledger_guaranteed",
+   "page_marker": [
+    "Total Projected Values",
+    "Guaranteed Values Minimum"
+   ],
+   "cells": 11,
+   "columns": [
+    {
+     "key": "year",
+     "header": "End of Year",
+     "kind": "integer",
+     "cell": 0
+    },
+    {
+     "key": "age",
+     "header": "Age",
+     "kind": "integer",
+     "cell": 1
+    },
+    {
+     "key": "premium",
+     "header": "Premium",
+     "kind": "money",
+     "cell": 2
+    },
+    {
+     "key": "withdrawals",
+     "header": "Withdrawals",
+     "kind": "money",
+     "cell": 3
+    },
+    {
+     "key": "rider_charges",
+     "header": "Rider Charges",
+     "kind": "money",
+     "cell": 4
+    },
+    {
+     "key": "interest_credits",
+     "header": "Interest & Index Credits",
+     "kind": "money",
+     "cell": 5
+    },
+    {
+     "key": "accumulation_value",
+     "header": "Accumulation Value",
+     "kind": "money",
+     "cell": 6
+    },
+    {
+     "key": "surrender_value",
+     "header": "Cash Surrender Value",
+     "kind": "money",
+     "cell": 7
+    },
+    {
+     "key": "death_benefit",
+     "header": "Death Benefit",
+     "kind": "money",
+     "cell": 8
+    },
+    {
+     "key": "guaranteed_min_value",
+     "header": "Guaranteed Minimum Contract Value",
+     "kind": "money",
+     "cell": 9
+    },
+    {
+     "key": "ltc_monthly",
+     "header": "LTC Monthly Benefit",
+     "kind": "money",
+     "cell": 10
+    }
+   ],
+   "invariants": [
+    {
+     "type": "years_increasing"
+    },
+    {
+     "type": "age_minus_year_constant"
+    },
+    {
+     "type": "constant",
+     "col": "withdrawals",
+     "level": "warning"
+    },
+    {
+     "type": "constant",
+     "col": "interest_credits",
+     "level": "warning"
+    },
+    {
+     "type": "non_decreasing",
+     "col": "ltc_monthly",
+     "level": "warning"
+    }
+   ]
+  },
+  {
+   "key": "ltc_values",
+   "page_marker": [
+    "Long-Term Care Projected Values"
+   ],
+   "cells": 8,
+   "columns": [
+    {
+     "key": "year",
+     "header": "End of Year",
+     "kind": "integer",
+     "cell": 0
+    },
+    {
+     "key": "age",
+     "header": "Age",
+     "kind": "integer",
+     "cell": 1
+    },
+    {
+     "key": "ltc_pool",
+     "header": "LTC Vested Benefit Base (guaranteed)",
+     "kind": "money",
+     "cell": 2
+    },
+    {
+     "key": "ltc_monthly",
+     "header": "LTC Monthly Benefit (guaranteed)",
+     "kind": "money",
+     "cell": 3
+    },
+    {
+     "key": "wellness_credits",
+     "header": "Wellness Credits",
+     "kind": "money",
+     "cell": 4
+    },
+    {
+     "key": "cumulative_wellness_credits",
+     "header": "Cumulative Wellness Credits",
+     "kind": "money",
+     "cell": 5
+    },
+    {
+     "key": "ltc_pool_nonguaranteed",
+     "header": "LTC Vested Benefit Base Incl Wellness",
+     "kind": "money",
+     "cell": 6
+    },
+    {
+     "key": "ltc_monthly_nonguaranteed",
+     "header": "LTC Monthly Benefit Incl Wellness",
+     "kind": "money",
+     "cell": 7
+    }
+   ],
+   "invariants": [
+    {
+     "type": "years_increasing"
+    },
+    {
+     "type": "age_minus_year_constant"
+    },
+    {
+     "type": "non_decreasing",
+     "col": "ltc_pool",
+     "level": "warning"
+    },
+    {
+     "type": "non_decreasing",
+     "col": "ltc_monthly",
+     "level": "warning"
+    },
+    {
+     "type": "non_decreasing",
+     "col": "cumulative_wellness_credits",
+     "level": "warning"
+    },
+    {
+     "type": "non_decreasing",
+     "col": "ltc_pool_nonguaranteed",
+     "level": "warning"
+    },
+    {
+     "type": "non_decreasing",
+     "col": "ltc_monthly_nonguaranteed",
+     "level": "warning"
+    }
+   ]
+  }
+ ],
+ "links": [
+  {
+   "field": "premium",
+   "table": "ledger_guaranteed",
+   "col": "premium",
+   "where": {
+    "year": 1.0
+   },
+   "exact": false
+  }
+ ]
+}

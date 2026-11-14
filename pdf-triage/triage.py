@@ -400,6 +400,16 @@ def decide(info, index, catalog):
         reasons.append("Quote inputs incomplete (" + (", ".join(missing) or "carrier") + " not found); "
                        "cannot match on profile.")
 
+    tpath = os.path.join(HERE, "templates", f"{info['layout_key']}.json")
+    if os.path.exists(tpath):
+        with open(tpath) as f:
+            tm = json.load(f)
+        if tm.get("status") == "trusted":
+            reasons.append(f"Known layout with a trusted reading template ({tm['carrier']} {tm['product']}).")
+            return "read with template (no AI); AI only if checks fail", library, reasons
+        reasons.append(f"Known layout with a trial reading template ({tm.get('agreements', 0)}/3 confirmations).")
+        return "read with template and AI, compare (trial)", library, reasons
+
     parser = next((x for x in catalog.get("parsers", []) if x.get("layout_key") == info["layout_key"]), None)
     if parser:
         reasons.append(f"Known layout with rule-based parser: {parser.get('name')}.")

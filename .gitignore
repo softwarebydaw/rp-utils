@@ -6,3 +6,8 @@ __pycache__/
 .DS_Store
 # Keep working PDFs out of the repo
 *.pdf
+
+# Answer files hold values copied from real client illustrations
+samples/answers/
+# Variant specs and outputs are built from real illustrations
+samples/variants/

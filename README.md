@@ -5,7 +5,7 @@ Utility programs that support LTC-Design work.
 | Utility | What it does | Instructions |
 |---|---|---|
 | [pdf-replace](pdf-replace/) | Find and replace a text value in a PDF | [pdf-replace/INSTRUCTIONS.md](pdf-replace/INSTRUCTIONS.md) |
-| [pdf-triage](pdf-triage/) | First-pass check of an illustration before AI: duplicate, same numbers, same quote, known layout | [pdf-triage/INSTRUCTIONS.md](pdf-triage/INSTRUCTIONS.md) |
+| [pdf-triage](pdf-triage/) | First-pass check of an illustration before AI, and reading templates that read known layouts without AI | [pdf-triage/INSTRUCTIONS.md](pdf-triage/INSTRUCTIONS.md) |
 
 ## Setup
 

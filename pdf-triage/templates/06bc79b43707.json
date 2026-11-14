@@ -1,0 +1,281 @@
+{
+ "layout_key": "06bc79b43707",
+ "carrier": "Securian",
+ "product": "SecureCare IV",
+ "layout": {
+  "carrier": "Securian",
+  "product": "SecureCare IV",
+  "forms": [
+   "ICC20-20212",
+   "ICC21-20220",
+   "ICC21-20221",
+   "ICC21-20222",
+   "ICC21-20223"
+  ],
+  "producer": "http://bfocom/products/pdf?version=-r"
+ },
+ "status": "trial",
+ "agreements": 0,
+ "learned_on": "2026-11-14",
+ "fields": [
+  {
+   "key": "illustration_date",
+   "kind": "date",
+   "label": "Date:",
+   "occurrence": 0,
+   "relation": "right"
+  },
+  {
+   "key": "issue_age",
+   "kind": "integer",
+   "label": "Proposed insured",
+   "occurrence": 0,
+   "relation": "right"
+  },
+  {
+   "key": "sex",
+   "kind": "sex",
+   "label": "Proposed insured",
+   "occurrence": 0,
+   "relation": "right"
+  },
+  {
+   "key": "rate_class",
+   "kind": "text",
+   "label": "age",
+   "occurrence": 0,
+   "relation": "right",
+   "skip_tokens": 1
+  },
+  {
+   "key": "state",
+   "kind": "state",
+   "label": "Presented in:",
+   "occurrence": 0,
+   "relation": "right"
+  },
+  {
+   "key": "premium",
+   "kind": "money",
+   "label": "Premiums",
+   "occurrence": 0,
+   "relation": "right"
+  },
+  {
+   "key": "benefit_period_years",
+   "kind": "integer",
+   "label": "Total LTC benefit period",
+   "occurrence": 0,
+   "relation": "right"
+  },
+  {
+   "key": "inflation",
+   "kind": "text",
+   "label": "LTC Inflation Protection Agreement",
+   "occurrence": 0,
+   "relation": "right"
+  },
+  {
+   "key": "elimination_days",
+   "kind": "integer",
+   "label": "Elimination period",
+   "occurrence": 0,
+   "relation": "right"
+  },
+  {
+   "key": "ltc_pool_day1",
+   "kind": "money",
+   "label": "Day 1: cash indemnity benefits for",
+   "occurrence": 0,
+   "relation": "right"
+  },
+  {
+   "key": "ltc_monthly_day1",
+   "kind": "money",
+   "label": "Monthly:",
+   "occurrence": 0,
+   "relation": "right"
+  },
+  {
+   "key": "ltc_pool_age85",
+   "kind": "money",
+   "label": "Age 85: cash indemnity benefits for",
+   "occurrence": 0,
+   "relation": "right"
+  },
+  {
+   "key": "face_amount",
+   "kind": "money",
+   "label": "Face amount",
+   "occurrence": 0,
+   "relation": "right"
+  },
+  {
+   "key": "return_of_premium",
+   "kind": "text",
+   "label": "Return of premium option",
+   "occurrence": 0,
+   "relation": "right"
+  }
+ ],
+ "tables": [
+  {
+   "key": "ledger_guaranteed",
+   "page_marker": [
+    "Your policy's guaranteed values"
+   ],
+   "cells": 9,
+   "columns": [
+    {
+     "key": "year",
+     "header": "Year",
+     "kind": "integer",
+     "cell": 0
+    },
+    {
+     "key": "age",
+     "header": "Age",
+     "kind": "integer",
+     "cell": 1
+    },
+    {
+     "key": "premium",
+     "header": "Annual Premium",
+     "kind": "money",
+     "cell": 2
+    },
+    {
+     "key": "surrender_value",
+     "header": "Surrender value",
+     "kind": "money",
+     "cell": 3
+    },
+    {
+     "key": "death_benefit",
+     "header": "Death benefit",
+     "kind": "money",
+     "cell": 4
+    },
+    {
+     "key": "ltc_pool",
+     "header": "Total",
+     "kind": "money",
+     "cell": 5
+    },
+    {
+     "key": "ltc_annual",
+     "header": "Annual",
+     "kind": "money",
+     "cell": 6
+    },
+    {
+     "key": "ltc_monthly",
+     "header": "Monthly",
+     "kind": "money",
+     "cell": 7
+    },
+    {
+     "key": "irr",
+     "header": "Internal Rate of Return (IRR)",
+     "kind": "percent",
+     "cell": 8
+    }
+   ],
+   "invariants": [
+    {
+     "type": "years_consecutive"
+    },
+    {
+     "type": "age_minus_year_constant"
+    },
+    {
+     "type": "ratio",
+     "a": "ltc_monthly",
+     "b": "ltc_annual",
+     "times": 12
+    },
+    {
+     "type": "non_decreasing",
+     "col": "surrender_value",
+     "level": "warning"
+    },
+    {
+     "type": "constant",
+     "col": "death_benefit",
+     "level": "warning"
+    },
+    {
+     "type": "non_decreasing",
+     "col": "ltc_pool",
+     "level": "warning"
+    },
+    {
+     "type": "non_decreasing",
+     "col": "ltc_annual",
+     "level": "warning"
+    },
+    {
+     "type": "non_decreasing",
+     "col": "ltc_monthly",
+     "level": "warning"
+    }
+   ]
+  }
+ ],
+ "links": [
+  {
+   "field": "issue_age",
+   "table": "ledger_guaranteed",
+   "col": "age",
+   "where": {
+    "year": 1.0
+   },
+   "exact": true
+  },
+  {
+   "field": "premium",
+   "table": "ledger_guaranteed",
+   "col": "premium",
+   "where": {
+    "year": 1.0
+   },
+   "exact": false
+  },
+  {
+   "field": "ltc_pool_day1",
+   "table": "ledger_guaranteed",
+   "col": "ltc_pool",
+   "where": {
+    "year": 1.0
+   },
+   "exact": false
+  },
+  {
+   "field": "ltc_monthly_day1",
+   "table": "ledger_guaranteed",
+   "col": "ltc_monthly",
+   "where": {
+    "year": 1.0
+   },
+   "exact": false
+  },
+  {
+   "field": "ltc_pool_age85",
+   "table": "ledger_guaranteed",
+   "col": "ltc_pool",
+   "where": {
+    "age": 85.0
+   },
+   "exact": false
+  },
+  {
+   "field": "face_amount",
+   "table": "ledger_guaranteed",
+   "col": "death_benefit",
+   "where": {
+    "year": 1.0
+   },
+   "exact": false
+  }
+ ]
+}
