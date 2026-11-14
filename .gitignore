@@ -1,0 +1,6 @@
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+# Keep working PDFs out of the repo
+*.pdf
